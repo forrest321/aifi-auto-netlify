@@ -9,11 +9,18 @@ interface SettingsDialogProps {
 
 // Venice models available for selection
 const VENICE_MODELS = [
-  { id: 'llama-3.3-70b', name: 'Llama 3.3 70B', description: 'Latest Llama model with 70B parameters' },
-  { id: 'venice-uncensored', name: 'Venice Uncensored', description: 'Venice\'s default uncensored model' },
-  { id: 'dolphin-2.9.2-qwen2-72b', name: 'Dolphin Qwen2 72B', description: 'Advanced reasoning model' },
-  { id: 'gpt-4o', name: 'GPT-4 Omni', description: 'OpenAI\'s latest multimodal model' },
-  { id: 'claude-3-5-sonnet-20241022', name: 'Claude 3.5 Sonnet', description: 'Anthropic\'s Claude model' },
+  { id: 'venice-uncensored', name: 'Venice Uncensored 1.1', description: 'Venice\'s uncensored model - default' },
+  { id: 'llama-3.3-70b', name: 'Llama 3.3 70B', description: 'Latest Llama model with function calling' },
+  { id: 'llama-3.1-405b', name: 'Llama 3.1 405B', description: 'Most intelligent - 405B parameters' },
+  { id: 'qwen-2.5-qwq-32b', name: 'Venice Reasoning', description: 'Optimized for reasoning tasks' },
+  { id: 'dolphin-2.9.2-qwen2-72b', name: 'Dolphin 72B', description: 'Most uncensored model' },
+  { id: 'deepseek-r1-671b', name: 'DeepSeek R1 671B', description: 'Advanced reasoning - 671B parameters' },
+  { id: 'qwen3-235b', name: 'Venice Large 1.1', description: 'Large model with 235B parameters' },
+  { id: 'mistral-31-24b', name: 'Venice Medium', description: 'Balanced model with vision support' },
+  { id: 'qwen-2.5-coder-32b', name: 'Qwen Coder 32B', description: 'Optimized for code generation' },
+  { id: 'deepseek-coder-v2-lite', name: 'DeepSeek Coder Lite', description: 'Lightweight code model' },
+  { id: 'qwen3-4b', name: 'Venice Small', description: 'Fast and efficient - 4B parameters' },
+  { id: 'llama-3.2-3b', name: 'Llama 3.2 3B', description: 'Fastest model - 3B parameters' },
 ]
 
 export function SettingsDialog({ isOpen, onClose }: SettingsDialogProps) {

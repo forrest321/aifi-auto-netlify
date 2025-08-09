@@ -29,9 +29,6 @@ function Home() {
   // Memoize messages to prevent unnecessary re-renders
   const messages = useMemo(() => currentConversation?.messages || [], [currentConversation]);
 
-  // Check if Venice API key is defined
-  const isVeniceKeyDefined = Boolean(import.meta.env.VENICE_API_KEY);
-
   // Local state
   const [input, setInput] = useState('')
   const [editingChatId, setEditingChatId] = useState<string | null>(null)
@@ -257,12 +254,6 @@ function Home() {
 
       {/* Main Content */}
       <div className="flex flex-col flex-1">
-        {!isVeniceKeyDefined && (
-          <div className="w-full max-w-3xl px-2 py-2 mx-auto mt-4 mb-2 font-medium text-center text-white bg-orange-500 rounded-md text-sm">
-            <p>This app requires a Venice.ai API key to work properly. Update your <code>.env</code> file or get a <a href='https://venice.ai/settings/api' className='underline'>new Venice API key</a>.</p>
-            <p>For local development, use <a href='https://www.netlify.com/products/dev/' className='underline'>netlify dev</a> to automatically load environment variables.</p>
-          </div>
-        )}
         {error && (
           <p className="w-full max-w-3xl p-4 mx-auto font-bold text-orange-500">{error}</p>
         )}

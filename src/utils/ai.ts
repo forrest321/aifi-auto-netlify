@@ -112,7 +112,7 @@ export const genAIResponse = createServerFn({ method: 'GET', response: 'raw' })
     try {
       // Create streaming request to Venice API
       const response = await venice.createChatCompletion({
-        model: data.model || 'llama-3.3-70b',
+        model: data.model || 'venice-uncensored',
         messages: veniceMessages,
         stream: true,
         max_tokens: 4096,

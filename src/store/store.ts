@@ -35,7 +35,7 @@ const initialState: State = {
   currentConversationId: null,
   isLoading: false,
   settings: {
-    model: 'llama-3.3-70b',
+    model: 'venice-uncensored',
     webSearchEnabled: false
   }
 }
