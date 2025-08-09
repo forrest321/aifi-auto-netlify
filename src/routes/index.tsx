@@ -24,13 +24,13 @@ function Home() {
     addMessage,
   } = useConversations()
   
-  const { isLoading, setLoading, getActivePrompt } = useAppState()
+  const { isLoading, setLoading, getActivePrompt, settings } = useAppState()
 
   // Memoize messages to prevent unnecessary re-renders
   const messages = useMemo(() => currentConversation?.messages || [], [currentConversation]);
 
-  // Check if Anthropic API key is defined
-  const isAnthropicKeyDefined = Boolean(import.meta.env.VITE_ANTHROPIC_API_KEY);
+  // Check if Venice API key is defined
+  const isVeniceKeyDefined = Boolean(import.meta.env.VENICE_API_KEY);
 
   // Local state
   const [input, setInput] = useState('')
@@ -72,11 +72,13 @@ function Home() {
         }
       }
 
-      // Get AI response
+      // Get AI response with Venice settings
       const response = await genAIResponse({
         data: {
           messages: [...messages, userMessage],
           systemPrompt,
+          model: settings.model,
+          webSearchEnabled: settings.webSearchEnabled,
         },
       })
 
@@ -97,17 +99,14 @@ function Home() {
         const out = await reader.read()
         done = out.done
         if (!done) {
-          try {
-            const json = JSON.parse(decoder.decode(out.value))
-            if (json.type === 'content_block_delta') {
-              newMessage = {
-                ...newMessage,
-                content: newMessage.content + json.delta.text,
-              }
-              setPendingMessage(newMessage)
+          // Venice API returns plain text chunks for streaming
+          const chunk = decoder.decode(out.value)
+          if (chunk) {
+            newMessage = {
+              ...newMessage,
+              content: newMessage.content + chunk,
             }
-          } catch (e) {
-            console.error('Error parsing streaming response:', e)
+            setPendingMessage(newMessage)
           }
         }
       }
@@ -258,9 +257,9 @@ function Home() {
 
       {/* Main Content */}
       <div className="flex flex-col flex-1">
-        {!isAnthropicKeyDefined && (
+        {!isVeniceKeyDefined && (
           <div className="w-full max-w-3xl px-2 py-2 mx-auto mt-4 mb-2 font-medium text-center text-white bg-orange-500 rounded-md text-sm">
-            <p>This app requires an Anthropic API key to work properly. Update your <code>.env</code> file or get a <a href='https://console.anthropic.com/settings/keys' className='underline'>new Anthropic key</a>.</p>
+            <p>This app requires a Venice.ai API key to work properly. Update your <code>.env</code> file or get a <a href='https://venice.ai/settings/api' className='underline'>new Venice API key</a>.</p>
             <p>For local development, use <a href='https://www.netlify.com/products/dev/' className='underline'>netlify dev</a> to automatically load environment variables.</p>
           </div>
         )}

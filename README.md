@@ -2,7 +2,7 @@
 
 ![TanStack Starter Preview](tanstack-starter-preview.jpg)
 
-A modern chat template built with TanStack Router and Claude AI integration features a clean and responsive interface.
+A modern chat template built with TanStack Router and Venice.ai integration featuring a clean and responsive interface with multiple AI models.
 
 **⚡ View demo:** [https://tanstack-starter.netlify.app/](https://tanstack-starter.netlify.app/)
 
@@ -24,7 +24,7 @@ A modern chat template built with TanStack Router and Claude AI integration feat
 - [Styling](#styling)
 - [Error Monitoring](#error-monitoring)
 - [Environment Configuration](#environment-configuration)
-  - [Anthropic API Key](#anthropic-api-key)
+  - [Venice API Key](#venice-api-key)
   - [Convex Configuration (Optional)](#convex-configuration-optional)
 - [Routing](#routing)
   - [Adding A Route](#adding-a-route)
@@ -45,7 +45,8 @@ Clicking this button will create a new repo for you that looks exactly like this
 ## Features
 
 ### AI Capabilities
-- 🤖 Powered by Claude 3.5 Sonnet 
+- 🤖 Powered by Venice.ai with multiple model options (Llama, GPT-4, Claude, etc.)
+- 🌐 Optional web search integration for up-to-date information
 - 📝 Rich markdown formatting with syntax highlighting
 - 🎯 Customizable system prompts for tailored AI behavior
 - 🔄 Real-time message updates and streaming responses
@@ -64,14 +65,14 @@ Clicking this button will create a new repo for you that looks exactly like this
 - **State Management**: TanStack Store
 - **Database**: Convex (optional)
 - **Styling**: Tailwind CSS 4
-- **AI Integration**: Anthropic's Claude API
+- **AI Integration**: Venice.ai API (OpenAI-compatible)
 - **Build Tool**: Vite 6 with Vinxi
 
 ### Prerequisites
 
 - [Node.js](https://nodejs.org/) v20.9+
 - (optional) [nvm](https://github.com/nvm-sh/nvm) for Node version management
-- [Anthropic Claude API](https://www.anthropic.com/api)
+- [Venice.ai API](https://venice.ai/settings/api)
 - (optional) [Convex Account](https://dashboard.convex.dev/signup) for database storage
 
 ## Project Structure
@@ -228,13 +229,13 @@ If the Sentry environment variables are not defined, the application will run wi
 
 **Important**: Never commit your `.env` file to version control as it contains sensitive information. The `.env` file is already included in the project's `.gitignore` file to prevent accidental commits.
 
-### Anthropic API Key
+### Venice API Key
 
-You can generate and manage your Anthropic API keys through the [Anthropic Console](https://console.anthropic.com/login).
+You can generate and manage your Venice.ai API keys through the [Venice.ai Settings](https://venice.ai/settings/api).
 
 ```
 # .env file
-VITE_ANTHROPIC_API_KEY=your_anthropic_api_key
+VENICE_API_KEY=your_venice_api_key
 ```
 
 ### Convex Configuration (Optional)

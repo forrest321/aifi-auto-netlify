@@ -16,18 +16,28 @@ export interface Conversation {
   messages: Message[]
 }
 
+export interface Settings {
+  model: string
+  webSearchEnabled: boolean
+}
+
 export interface State {
   prompts: Prompt[]
   conversations: Conversation[]
   currentConversationId: string | null
   isLoading: boolean
+  settings: Settings
 }
 
 const initialState: State = {
   prompts: [],
   conversations: [],
   currentConversationId: null,
-  isLoading: false
+  isLoading: false,
+  settings: {
+    model: 'llama-3.3-70b',
+    webSearchEnabled: false
+  }
 }
 
 export const store = new Store<State>(initialState)
@@ -140,6 +150,14 @@ export const actions = {
 
   setLoading: (isLoading: boolean) => {
     store.setState(state => ({ ...state, isLoading }))
+  },
+
+  // Settings actions
+  updateSettings: (settings: Partial<Settings>) => {
+    store.setState(state => ({
+      ...state,
+      settings: { ...state.settings, ...settings }
+    }))
   }
 }
 
@@ -151,5 +169,6 @@ export const selectors = {
   getPrompts: (state: State) => state.prompts,
   getConversations: (state: State) => state.conversations,
   getCurrentConversationId: (state: State) => state.currentConversationId,
-  getIsLoading: (state: State) => state.isLoading
+  getIsLoading: (state: State) => state.isLoading,
+  getSettings: (state: State) => state.settings
 } 

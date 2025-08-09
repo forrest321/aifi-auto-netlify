@@ -1,5 +1,5 @@
 import { createServerFn } from '@tanstack/react-start'
-import { Anthropic } from '@anthropic-ai/sdk'
+import { VeniceClient, VeniceAPIError, parseSSEStream, type VeniceMessage } from './venice'
 
 export interface Message {
   id: string
@@ -49,31 +49,28 @@ const DEFAULT_SYSTEM_PROMPT = `You are TanStack Chat, an AI assistant using Mark
 
 Keep responses concise and well-structured. Use appropriate Markdown formatting to enhance readability and understanding.`
 
-// Non-streaming implementation
+// Streaming implementation using Venice API
 export const genAIResponse = createServerFn({ method: 'GET', response: 'raw' })
   .validator(
     (d: {
       messages: Array<Message>
       systemPrompt?: { value: string; enabled: boolean }
+      model?: string
+      webSearchEnabled?: boolean
     }) => d,
   )
-  // .middleware([loggingMiddleware])
   .handler(async ({ data }) => {
     // Check for API key in environment variables
-    const apiKey = process.env.ANTHROPIC_API_KEY || import.meta.env.VITE_ANTHROPIC_API_KEY
+    const apiKey = process.env.VENICE_API_KEY || import.meta.env.VENICE_API_KEY
 
     if (!apiKey) {
       throw new Error(
-        'Missing API key: Please set VITE_ANTHROPIC_API_KEY in your environment variables or VITE_ANTHROPIC_API_KEY in your .env file.'
+        'Missing API key: Please set VENICE_API_KEY in your environment variables or .env file.'
       )
     }
     
-    // Create Anthropic client with proper configuration
-    const anthropic = new Anthropic({
-      apiKey,
-      // Add proper timeout to avoid connection issues
-      timeout: 30000 // 30 seconds timeout
-    })
+    // Create Venice client
+    const venice = new VeniceClient(apiKey)
 
     // Filter out error messages and empty messages
     const formattedMessages = data.messages
@@ -83,7 +80,7 @@ export const genAIResponse = createServerFn({ method: 'GET', response: 'raw' })
           !msg.content.startsWith('Sorry, I encountered an error'),
       )
       .map((msg) => ({
-        role: msg.role,
+        role: msg.role as 'user' | 'assistant',
         content: msg.content.trim(),
       }))
 
@@ -94,6 +91,7 @@ export const genAIResponse = createServerFn({ method: 'GET', response: 'raw' })
       })
     }
 
+    // Prepare system prompt
     const systemPrompt = data.systemPrompt?.enabled
       ? `${DEFAULT_SYSTEM_PROMPT}\n\n${data.systemPrompt.value}`
       : DEFAULT_SYSTEM_PROMPT
@@ -105,15 +103,36 @@ export const genAIResponse = createServerFn({ method: 'GET', response: 'raw' })
       finalPrompt: systemPrompt,
     })
 
+    // Prepare messages with system prompt
+    const veniceMessages: VeniceMessage[] = [
+      { role: 'system', content: systemPrompt },
+      ...formattedMessages
+    ]
+
     try {
-      const response = await anthropic.messages.stream({
-        model: 'claude-3-5-sonnet-20241022',
+      // Create streaming request to Venice API
+      const response = await venice.createChatCompletion({
+        model: data.model || 'llama-3.3-70b',
+        messages: veniceMessages,
+        stream: true,
         max_tokens: 4096,
-        system: systemPrompt,
-        messages: formattedMessages,
+        temperature: 0.7,
+        venice_parameters: {
+          include_venice_system_prompt: true,
+          enable_web_search: data.webSearchEnabled ? 'auto' : 'off',
+          enable_web_citations: data.webSearchEnabled || false,
+        }
       })
 
-      return new Response(response.toReadableStream())
+      // Parse SSE stream and return as ReadableStream
+      if (!response.body) {
+        throw new Error('No response body received from Venice API')
+      }
+
+      const reader = response.body.getReader()
+      const stream = parseSSEStream(reader)
+      
+      return new Response(stream)
     } catch (error) {
       console.error('Error in genAIResponse:', error)
       
@@ -121,15 +140,23 @@ export const genAIResponse = createServerFn({ method: 'GET', response: 'raw' })
       let errorMessage = 'Failed to get AI response'
       let statusCode = 500
       
-      if (error instanceof Error) {
+      if (error instanceof VeniceAPIError) {
+        errorMessage = error.message
+        statusCode = error.statusCode || 500
+        
+        if (error.statusCode === 429) {
+          errorMessage = 'Rate limit exceeded. Please try again in a moment.'
+        } else if (error.statusCode === 401) {
+          errorMessage = 'Authentication failed. Please check your Venice API key.'
+        } else if (error.statusCode === 503) {
+          errorMessage = 'Venice API is temporarily unavailable. Please try again later.'
+        }
+      } else if (error instanceof Error) {
         if (error.message.includes('rate limit')) {
           errorMessage = 'Rate limit exceeded. Please try again in a moment.'
-        } else if (error.message.includes('Connection error') || error.name === 'APIConnectionError') {
-          errorMessage = 'Connection to Anthropic API failed. Please check your internet connection and API key.'
-          statusCode = 503 // Service Unavailable
-        } else if (error.message.includes('authentication')) {
-          errorMessage = 'Authentication failed. Please check your Anthropic API key.'
-          statusCode = 401 // Unauthorized
+        } else if (error.message.includes('Connection error')) {
+          errorMessage = 'Connection to Venice API failed. Please check your internet connection.'
+          statusCode = 503
         } else {
           errorMessage = error.message
         }
@@ -143,4 +170,4 @@ export const genAIResponse = createServerFn({ method: 'GET', response: 'raw' })
         headers: { 'Content-Type': 'application/json' },
       })
     }
-  }) 
+  })

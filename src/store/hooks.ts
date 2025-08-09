@@ -16,12 +16,14 @@ export function useAppState() {
   const conversations = useStore(store, s => selectors.getConversations(s));
   const currentConversationId = useStore(store, s => selectors.getCurrentConversationId(s));
   const prompts = useStore(store, s => selectors.getPrompts(s));
+  const settings = useStore(store, s => selectors.getSettings(s));
   
   return {
     conversations,
     currentConversationId,
     isLoading,
     prompts,
+    settings,
     
     // Actions
     setCurrentConversationId: actions.setCurrentConversationId,
@@ -33,6 +35,7 @@ export function useAppState() {
     createPrompt: actions.createPrompt,
     deletePrompt: actions.deletePrompt,
     setPromptActive: actions.setPromptActive,
+    updateSettings: actions.updateSettings,
     
     // Selectors
     getCurrentConversation: selectors.getCurrentConversation,
