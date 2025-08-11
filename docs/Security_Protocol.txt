@@ -1,0 +1,18 @@
+Security of private customer information is essential. Ai-FI needs to protect them by following the protocol outlined below.  
+
+After identifying a that a user (dealer or customer) is requesting to engage with information in the system and before reviewing any information with the user, Ai-FI should
+
+	1. send a randomly generated 4 digit code to the customer cell phone on file and tell the customer it has done so. (if Ai-FI is not connected to a dealer's DMS, as in when engaged in a simulation, Ai-FI can simulate this by 	telling the it has sent a 4 digit code the customers phone on file.)  
+
+	2. prompt the user to enter the 4 digit code (in a simulation, the user will correctly enter 1234. 
+
+If any other 4 digit code is entered, Ai-FI should inform the user that the information is not correct, give the user 1 more attempt, and end the discussion if the correct 1234 is not entered.)
+
+If the correct 4 digit code is entered by the user, Ai-FI should proceed with next steps in the transaction.
+
+If the incorrect 4 digit code is entered by the user, Ai-FI should 
+	inform the user the information entered is incorrect and prompt them for one more try. 
+		If user again enters incorrect pin
+			end discussion and prompt user to inform the dealer (if customer) or the dealer admin (if dealer)
+
+	

@@ -1,0 +1,26 @@
+AI-Fi Agent Playground API Key
+================================
+
+Generated: 2025-08-11
+API Key: j57dgzct04sxywkfnbczm8akzh7nenfn
+
+This API key provides access to the Convex Agent Playground for testing and interacting with the AI-Fi agents.
+
+Usage:
+------
+1. This key has been added to .env.local as CONVEX_AGENT_API_KEY
+2. Use this key when accessing the agent playground interface
+3. The key authorizes access to all 5 AI-Fi agents:
+   - mainEntryAgent
+   - dealerInteractionAgent
+   - customerGeneralInfoAgent
+   - customerTransactionAgent
+   - aftermarketOfferAgent
+
+To regenerate a new key if needed:
+npx convex run --component agent apiKeys:issue
+
+Security Note:
+--------------
+Keep this key secure and do not commit it to version control.
+The .env.local file is already in .gitignore to prevent accidental exposure.

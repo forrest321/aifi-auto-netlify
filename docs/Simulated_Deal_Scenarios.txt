@@ -1,0 +1,89 @@
+If a dealer or customer references any of the following deals, Ai-FI can act as though this is info found in the dealer's DMS.  It should initiate security protocal if one of these deals is referenced, and if the matching pin is entered by the user, Ai-FI can proceed.  
+
+Deal 1:
+a. Full Name as it appears on Driver's License: Jane Doe
+b. Address where vehicle will be registered: 123 Oak Street, Rivertown, CA 90210
+c. Current Insurance policy Info including policy number, effective and expiration dates, and provider: Geico G09876543 effective 3/15/24 expiring 3/15/25
+d. Vehicle selection including VIN, miles, Trim, and Color: 5XYZWDLB8JG512345 2023 Hyundai Santa Fe Limited Black 1,500 Miles
+e. Trade vehicle if applicable including VIN, miles, trim, and Color: 1GNSKBE0XBR123456 Chevrolet Tahoe LT 30,000 miles White
+f. Sale price: $38000
+g. Rebate amount if applicable: $1500
+h. Dealer fees: $1100
+i. Trade value if applicable: $28000
+j. Trade payoff if applicable: $25000
+k. Tax rate: 8.5%
+l. Social Security number: 123456789 customer has 780 Experian score
+m. Time at address and whether rent/own? and payment?: 5 yrs, Rent, $2000 per month
+n. Employment Info: Full-time, 6 years at XYZ Corporation, Senior Accountant
+o. Monthly income: $6000 monthly
+p. Agreement: Customer expects a payment below $700.
+
+Deal 2:
+a. Full Name as it appears on Driver's License: John Smith
+b. Address where vehicle will be registered: 789 Pine Street, Sunnyside, TX 75001
+c. Current Insurance policy Info including policy number, effective and expiration dates, and provider: Allstate A11223344 effective 2/20/24 expiring 2/20/25
+d. Vehicle selection including VIN, miles, Trim, and Color: 2G1FC3D36D9165432 2023 Chevrolet Camaro SS Red 800 Miles
+e. Trade vehicle if applicable including VIN, miles, trim, and Color: 1GNSCBKC7JR123456 Chevrolet Suburban Premier 25,000 miles Silver
+f. Sale price: $42000
+g. Rebate amount if applicable: $2500
+h. Dealer fees: $1100
+i. Trade value if applicable: $32000
+j. Trade payoff if applicable: $28000
+k. Tax rate: 7%
+l. Social Security number: 987654321 customer has 805 TransUnion score
+m. Time at address and whether rent/own? and payment?: 3 yrs, Rent, $1800 per month
+n. Employment Info: Full-time, 8 years at ABC Industries, Marketing Manager
+o. Monthly income: $8000 monthly
+p. Agreement: Customer expects a payment below $800.
+
+Deal 3:
+a. Full Name as it appears on Driver's License: Max Johnson
+b. Address where vehicle will be registered: 456 Birch Lane, Mountain View, CO 80301
+c. Current Insurance policy Info including policy number, effective and expiration dates, and provider: Progressive P99887766 effective 5/10/24 expiring 5/10/25
+d. Vehicle selection including VIN, miles, Trim, and Color: 1C4RJFAG5LC123456 2023 Jeep Grand Cherokee Limited White 1,200 Miles
+e. Trade vehicle if applicable including VIN, miles, trim, and Color: 1GYS4JKJ4FR123456 Cadillac Escalade Luxury 20,000 miles Black
+f. Sale price: $48000
+g. Rebate amount if applicable: $1800
+h. Dealer fees: $1100
+i. Trade value if applicable: $40000
+j. Trade payoff if applicable: $35000
+k. Tax rate: 6.5%
+l. Social Security number: 567891234 customer has 815 Equifax score
+m. Time at address and whether rent/own? and payment?: 7 yrs, Own, Mortgage $2500 per month
+n. Employment Info: Retired
+o. Monthly income: $7000 monthly
+p. Agreement: Customer expects a payment below $900.
+
+Deal 207:
+a. Full Name as it appears on Driver's License: Test Te Tester
+b. Address where vehicle will be registered: 555 Maple St Honeycomb FL 37756   
+c. Current Insurance policy Info including policy number, efffective and expiration dates, and provider: State Farm F10923335 effective 4/09/24 expering 4/09/25
+d. Vehicle selection including VIN, miles, Trim, and Color: 1FTFW1ED7LKE28463 2023 Ford F150 Lariet Blue 193 Miles
+e. Trade vehicle if applicable including VIN, miles, trim, and Color: 1FTEW1EP1KK123456 Ford F150 XLT 18,350 miles Green
+f. Sale price: 69500 
+g. Rebate amount if applicable: 2000  
+h. Dealer fees {Fior preview version, we will always use $1100 for dealer fee including electronic registration fee $200)
+i. Trade value if applicable: 42500
+j. Trade payoff if applicable: 35000
+k. Tax rate (customer only pay tax on the difference between the new car (plus dealer fees plus any aftermarket products) and the trade value)
+l. Social Security number: 888553322 customer has 832 Equifax score
+m. Time at address and whether rent/own? and payment?: 10 yrs 1500 per month
+n. Employment Info. Full-time/self-employed/retired. If not retired, Time at current employment, Name of current employment, Employment title: Retired  
+o. Monthly income: 7500 monthly
+p. Agreement. If payment, what are customer's payment expectations. If "OTD" what are the customers financed amount expectations?: customer expects a payment below 1000 dollars  
+
+Deal 107:
+a. Full Name as it appears on Driver's License: Jane Louise Smith
+b. Address where vehicle will be registered: 456 Oak Street, Smalltown, FL 33876 USA  
+c. Current Insurance policy Info including policy number, efffective and expiration dates, and provider: XYZ Insurance Policy 987654321 Effective Date: 2022-07-01
+Expiration Date: 2023-07-01
+d. Vehicle selection including VIN, miles, Trim, and Color:  5XYPGDA50MG123456 WHite SX trim with 34,500 miles 
+e. Trade vehicle if applicable including VIN, miles, trim, and Color: Trade is applicable, VIN- 2FMPK3G97GB123456 (identify the vehicle make and model based on vin) Miles- 103,487 Trim- SEL Color- Magnetic Metallic
+f. Sale price: 17500  
+g. Rebate amount if applicable: N/A  
+h. Dealer fees {For preview version, we will always use $1100 for dealer fee including electronic registration fee $200)
+i. Trade value if applicable: 5000
+j. Trade payoff if applicable: 6327.34
+k. Tax rate (customer only pays tax on the difference between the new car (plus dealer fees plus any aftermarket products) and the trade value. Calculate all simulations with 6  percent applicable tax.
+l. tag and title cost (for simulations always assume $125.) 
+m. Customer's final amount expectation.  The agreed upon "OTD" amount. -- 20975.84

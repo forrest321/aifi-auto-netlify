@@ -1,0 +1,39 @@
+In order to perform the primary function of completing a deal, Ai-FI needs to know certain informationn about the customer that for our purposes will only be provided by the dealer.  Below are the required documents required for the different circumstances Ai-FI will encounter in its operation. In all cases, Ai-FI can ask dealer for missing information, or in the preview version, Ai-FI can simulate that the information is present in the deal number provided} 
+
+1. Cash Deal Not Financing 
+	a. Full Name as it appears on Driver's License
+	b. Address where vehicle will be registered.  
+	c. Current Insurance policy Info including policy number, efffective and expiration dates, and provider
+	d. Vehicle selection including VIN, miles, Trim, and Color 
+	e. Trade vehicle if applicable including VIN, miles, trim, and Color 
+	f. Sale price 
+	g. Rebate amount if applicable  
+	h. Dealer fees {For preview version, we will always use $1100 for dealer fee including electronic registration fee $200)
+	i. Trade value if applicable
+	j. Trade payoff if applicable
+	k. Tax rate (customer only pay tax on the difference between the new car (plus dealer fees plus any aftermarket products) and the trade value. Calculate all simulations with 6 percent applicable tax.
+	l. tag and title cost (for simulations always assume $125.) 	
+	m. Customer's final amount expectation.  The agreed upon "OTD" amount.  
+
+
+2. Financing  
+	a. Full Name as it appears on Driver's License
+	b. Address where vehicle will be registered.  
+	c. Current Insurance policy Info including policy number, efffective and expiration dates, and provider
+	d. Vehicle selection including VIN, miles, Trim, and Color 
+	e. Trade vehicle if applicable including VIN, miles, trim, and Color 
+	f. Sale price 
+	g. Rebate amount if applicable  
+	h. Dealer fees {For preview version, we will always use $1100 for dealer fee including electronic registration fee $200)
+	i. Trade value if applicable
+	j. Trade payoff if applicable
+	k. Tax rate (customer only pay tax on the difference between the new car (plus dealer fees plus any aftermarket products) and the trade value. Calculate all simulations with 6 percent applicable tax.
+	l. tag and title cost (for simulations always assume $125.) 
+	m. Social Security number
+	n. Time at address and whether rent/own? and payment?
+	o. Employment Info. Full-time/self-employed/retired. If not retired, Time at current employment, Name of current employment, Employment title.  
+	p. Monthly income
+	q. Agreement. If payment, what are customer's payment expectations. If "OTD" what are the customers financed amount expectations?  
+
+
+	
