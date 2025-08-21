@@ -1,9 +1,9 @@
-import { PlusCircle, MessageCircle, Trash2, Edit2 } from 'lucide-react';
+import { MessageCircle, Trash2, Edit2 } from 'lucide-react';
+import { DebugPanel, type DebugInfo } from './DebugPanel';
 
 interface SidebarProps {
   conversations: Array<{ id: string; title: string }>;
   currentConversationId: string | null;
-  handleNewChat: () => void;
   setCurrentConversationId: (id: string) => void;
   handleDeleteChat: (id: string) => void;
   editingChatId: string | null;
@@ -11,34 +11,27 @@ interface SidebarProps {
   editingTitle: string;
   setEditingTitle: (title: string) => void;
   handleUpdateChatTitle: (id: string, title: string) => void;
+  debugInfo?: DebugInfo;
 }
 
 export const Sidebar = ({ 
   conversations, 
   currentConversationId, 
-  handleNewChat, 
   setCurrentConversationId, 
   handleDeleteChat, 
   editingChatId, 
   setEditingChatId, 
   editingTitle, 
   setEditingTitle, 
-  handleUpdateChatTitle 
+  handleUpdateChatTitle,
+  debugInfo
 }: SidebarProps) => (
-  <div className="flex flex-col w-64 bg-gray-800 border-r border-gray-700">
-    <div className="p-4 border-b border-gray-700">
-      <button
-        onClick={handleNewChat}
-        className="flex items-center justify-center w-full gap-2 px-3 py-2 text-sm font-medium text-white rounded-lg bg-gradient-to-r from-orange-500 to-red-600 hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-orange-500"
-      >
-        <PlusCircle className="w-4 h-4" />
-        New Chat
-      </button>
-    </div>
-
-    {/* Chat List */}
-    <div className="flex-1 overflow-y-auto">
-      {conversations.map((chat) => (
+  <div className="flex flex-col w-64 bg-gray-800 border-r border-gray-700 relative">
+    {/* Main content area with flex layout */}
+    <div className="flex-1 flex flex-col min-h-0">
+      {/* Chat List - will shrink if needed */}
+      <div className={`${debugInfo ? 'flex-shrink' : 'flex-1'} overflow-y-auto min-h-[200px]`}>
+        {conversations.map((chat) => (
         <div
           key={chat.id}
           className={`group flex items-center gap-3 px-3 py-2 cursor-pointer hover:bg-gray-700/50 ${
@@ -99,6 +92,14 @@ export const Sidebar = ({
           </div>
         </div>
       ))}
+      </div>
+      
+      {/* Debug Panel - takes remaining space with bottom padding for router button */}
+      {debugInfo && (
+        <div className="flex-1 min-h-0 pb-16">
+          <DebugPanel debugInfo={debugInfo} />
+        </div>
+      )}
     </div>
   </div>
 ); 

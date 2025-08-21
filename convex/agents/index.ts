@@ -6,3 +6,5 @@ export { dealerInteractionAgent } from "./dealerInteractionAgent";
 export { customerGeneralInfoAgent } from "./customerGeneralInfoAgent";
 export { customerTransactionAgent } from "./customerTransactionAgent";
 export { aftermarketOfferAgent } from "./aftermarketOfferAgent";
+export { customerPaperworkAgent } from "./customerPaperworkAgent";
+export { toolHandlerAgent } from "./toolHandlerAgent";

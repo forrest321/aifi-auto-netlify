@@ -22,7 +22,6 @@ A modern chat template built with TanStack Router and Venice.ai integration feat
   - [Troubleshooting](#troubleshooting)
   - [Building For Production](#building-for-production)
 - [Styling](#styling)
-- [Error Monitoring](#error-monitoring)
 - [Environment Configuration](#environment-configuration)
   - [Venice API Key](#venice-api-key)
   - [Convex Configuration (Optional)](#convex-configuration-optional)
@@ -92,7 +91,6 @@ tanstack-template/
 │   ├── client.tsx       # Client-side entry point
 │   ├── convex.tsx       # Convex client configuration
 │   ├── router.tsx       # Router configuration
-│   ├── sentry.ts        # Sentry error monitoring setup
 │   ├── ssr.tsx          # Server-side rendering setup
 │   └── styles.css       # Global styles
 ├── .env.example         # Example environment variables
@@ -135,7 +133,6 @@ Follow these steps to set up and run the project locally:
    Then edit the `.env` file with your credentials:
    - Required: Add your Anthropic API key (`VITE_ANTHROPIC_API_KEY`)
    - Optional: Add Convex URL if using database features (`VITE_CONVEX_URL`)
-   - Optional: Add Sentry credentials for error monitoring (`VITE_SENTRY_DSN`, `SENTRY_AUTH_TOKEN`)
 
 4. **Start the development server**
    ```bash
@@ -209,21 +206,6 @@ npm run serve
 
 This project uses [Tailwind CSS](https://tailwindcss.com/) v4 for styling.
 
-## Error Monitoring
-
-This project uses [Sentry](https://sentry.io) for error monitoring and performance tracking. Sentry integration is optional and the project will run normally without Sentry configuration.
-
-To set up Sentry:
-
-1. Add your Sentry DSN and Auth Token to your `.env` file (created during the Getting Started steps)
-
-```
-# .env file
-VITE_SENTRY_DSN=your-sentry-dsn-here
-SENTRY_AUTH_TOKEN=your-sentry-auth-token-here
-```
-
-If the Sentry environment variables are not defined, the application will run without error monitoring.
 
 ## Environment Configuration
 

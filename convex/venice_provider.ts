@@ -17,12 +17,17 @@ export const venice = createOpenAI({
  * Venice Chat Models
  */
 export const veniceModels = {
-  // Default Venice model
+  // Default Venice model for conversational agents
   uncensored: 'venice-uncensored',
   
   // Llama models
   llama_3_3_70b: 'llama-3.3-70b',
   llama_3_1_405b: 'llama-3.1-405b',
+  
+  // Function calling model - optimized for tool execution
+  llama_3_2_3b_tools: 'llama-3.2-3b',
+  
+  // Other Llama models
   llama_3_2_3b: 'llama-3.2-3b',
   
   // Qwen models
@@ -41,10 +46,10 @@ export const veniceModels = {
 /**
  * Venice Embedding Models
  * Note: Venice may not have dedicated embedding endpoints,
- * so we'll use a fallback or text-similarity approach
+ * For now, we'll disable embeddings or use a simple fallback
  */
 export const veniceEmbedding = {
-  // Fallback to a compatible embedding model
-  // Venice may support text-embedding-3-small through OpenAI compatibility
-  small: 'text-embedding-3-small',
+  // Venice may not support embeddings - this may need to be removed or replaced
+  // with a simpler text similarity approach
+  small: 'text-embedding-3-small', // TODO: Verify Venice supports this model
 } as const;

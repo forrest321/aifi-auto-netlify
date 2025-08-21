@@ -16,11 +16,12 @@ export const WelcomeScreen = ({
   <div className="flex items-center justify-center flex-1 px-4">
     <div className="w-full max-w-3xl mx-auto text-center">
       <h1 className="mb-4 text-6xl font-bold text-transparent bg-gradient-to-r from-orange-500 to-red-600 bg-clip-text">
-        aifi
+        AI-Fi
       </h1>
       <p className="w-2/3 mx-auto mb-6 text-lg text-gray-400">
-        You can ask me about anything, I might or might not have a good
-        answer, but you can still ask.
+        Welcome to AI-Fi, the future of automotive finance. I'm here to make 
+        car buying the way it should be - pain-free! Whether you're a dealer 
+        or customer, I'll guide you through the entire process.
       </p>
       <form onSubmit={handleSubmit}>
         <div className="relative max-w-xl mx-auto">
@@ -33,7 +34,7 @@ export const WelcomeScreen = ({
                 handleSubmit(e)
               }
             }}
-            placeholder="Type something clever (or don't, we won't judge)..."
+            placeholder="Tell me if you're a dealer or customer to get started..."
             className="w-full py-3 pl-4 pr-12 overflow-hidden text-sm text-white placeholder-gray-400 border rounded-lg resize-none border-orange-500/20 bg-gray-800/50 focus:outline-none focus:ring-2 focus:ring-orange-500/50 focus:border-transparent"
             rows={1}
             style={{ minHeight: '88px' }}

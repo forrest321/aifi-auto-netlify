@@ -27,11 +27,16 @@ export function SettingsDialog({ isOpen, onClose }: SettingsDialogProps) {
   const [promptForm, setPromptForm] = useState({ name: '', content: '' })
   const [isAddingPrompt, setIsAddingPrompt] = useState(false)
   const [showModelDropdown, setShowModelDropdown] = useState(false)
-  const { prompts, settings, createPrompt, deletePrompt, setPromptActive, updateSettings } = useAppState()
+  const { settings, updateSettings } = useAppState()
+  
+  // TODO: Implement proper prompt management
+  const prompts: any[] = []
+  const deletePrompt = (_id: string) => { /* TODO: Implement */ }
+  const setPromptActive = (_id: string, _active: boolean) => { /* TODO: Implement */ }
 
   const handleAddPrompt = () => {
     if (!promptForm.name.trim() || !promptForm.content.trim()) return
-    createPrompt(promptForm.name, promptForm.content)
+    // TODO: Implement prompt functionality
     setPromptForm({ name: '', content: '' })
     setIsAddingPrompt(false)
   }

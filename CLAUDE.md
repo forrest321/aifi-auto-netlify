@@ -3,7 +3,9 @@
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
 ## Project Overview
-This is an AI-Fi automotive finance management system built with TanStack Start, Convex, and AI agents. The system replaces traditional Finance Managers in automotive dealerships with specialized AI agents that handle complete vehicle purchase transactions for both cash and financed deals. It demonstrates advanced patterns in agent-based AI systems, streaming responses, state management, and SSR.
+This is AI-Fi, an automotive finance management system built with TanStack Start, Convex, Venice.ai, Clerk Auth, Upstash data, and Convex AI agents. 
+The system replaces traditional Finance Managers in automotive dealerships with specialized AI agents that handle complete vehicle 
+purchase transactions for both cash and financed deals. It demonstrates advanced patterns in agent-based AI systems, streaming responses, state management, and SSR.
 
 ## Development Commands
 
@@ -30,14 +32,20 @@ The system is built around specialized Convex AI agents that handle different as
 1. **mainEntryAgent** - Entry point, routes users to Dealer or Customer paths
 2. **dealerInteractionAgent** - Assists dealers in entering and verifying deal information
 3. **customerGeneralInfoAgent** - Handles customers not in system, provides general information
-4. **customerTransactionAgent** - Manages transaction completion for customers with deals
-5. **aftermarketOfferAgent** - Presents 3-tier aftermarket options with objection handling
+4. **customerPaperworkAgent** - Walks the user through reading and e-signing a set of pdf based paperwork. There will be 
+different sets of paperwork and the signing of these sets will be independent of one another. DMV paperwork can be completed at any time. 
+Deal specific paperwork must be prepopulated with the respective data points such as price, financing terms, the current date, 
+so on and containing all relevant data that are required for legally e-signing. In both cases, the system will use 
+tanstack to present the user with a download of the document and a working e-sign signature pad.
+5. **customerTransactionAgent** - Manages transaction completion for customers with deals
+6. **aftermarketOfferAgent** - Presents 3-tier aftermarket options with objection handling
 
 ### Agent-Based Architecture Flow
-1. **Entry Point**: User selects "Dealer" or "Customer" via mainEntryAgent
-2. **Dealer Path**: dealerInteractionAgent verifies deal completeness, handles updates
+1. **Entry Point**: A helpful chatbot greets the user and invites them to begin or continue the process of buying a car the way it should be, pain-free!
+2. **Dealer Path**: dealerInteractionAgent verifies deal completeness, handles updates, and provides useful tools helpful to an authenticated dealer user
 3. **Customer Path**: 
    - General info: customerGeneralInfoAgent for bank programs/payment estimates
+   - Paperwork: 
    - Transaction: customerTransactionAgent for deal completion with security verification
 4. **Aftermarket Flow**: aftermarketOfferAgent handles upselling during transaction
 5. **Tools Integration**: Agents use shared tools for calculations, document generation, signatures

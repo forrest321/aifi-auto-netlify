@@ -6,3 +6,8 @@ dist-ssr
 .vinxi
 .netlify
 .env
+
+# Claude-generated documentation files
+IMPLEMENTATION_PLAN.md
+CURRENT_STATUS.md
+ENHANCEMENT_SUMMARY.md

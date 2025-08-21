@@ -15,14 +15,12 @@ export function useAppState() {
   const isLoading = useStore(store, s => selectors.getIsLoading(s));
   const conversations = useStore(store, s => selectors.getConversations(s));
   const currentConversationId = useStore(store, s => selectors.getCurrentConversationId(s));
-  const prompts = useStore(store, s => selectors.getPrompts(s));
   const settings = useStore(store, s => selectors.getSettings(s));
   
   return {
     conversations,
     currentConversationId,
     isLoading,
-    prompts,
     settings,
     
     // Actions
@@ -32,14 +30,10 @@ export function useAppState() {
     updateConversationTitle: actions.updateConversationTitle,
     addMessage: actions.addMessage,
     setLoading: actions.setLoading,
-    createPrompt: actions.createPrompt,
-    deletePrompt: actions.deletePrompt,
-    setPromptActive: actions.setPromptActive,
     updateSettings: actions.updateSettings,
     
     // Selectors
     getCurrentConversation: selectors.getCurrentConversation,
-    getActivePrompt: selectors.getActivePrompt,
   };
 }
 
@@ -64,7 +58,7 @@ export function useConversations() {
   // Convert Convex conversations to local format if available
   useEffect(() => {
     if (isConvexAvailable && convexConversations && convexConversations.length > 0) {
-      const formattedConversations: Conversation[] = convexConversations.map(conv => ({
+      const formattedConversations: Conversation[] = convexConversations.map((conv: any) => ({
         id: conv._id,
         title: conv.title,
         messages: conv.messages as Message[],

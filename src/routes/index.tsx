@@ -7,10 +7,12 @@ import {
   LoadingIndicator, 
   ChatInput, 
   Sidebar, 
-  WelcomeScreen 
+  WelcomeScreen,
+  type DebugInfo
 } from '../components'
-import { useConversations, useAppState, store, actions } from '../store'
-import { genAIResponse, type Message } from '../utils'
+import { useConversations, useAppState, actions } from '../store'
+import { type Message } from '../utils'
+import { genResponse } from '../utils/aifiResponse'
 
 function Home() {
   const {
@@ -24,7 +26,7 @@ function Home() {
     addMessage,
   } = useConversations()
   
-  const { isLoading, setLoading, getActivePrompt, settings } = useAppState()
+  const { isLoading, setLoading } = useAppState()
 
   // Memoize messages to prevent unnecessary re-renders
   const messages = useMemo(() => currentConversation?.messages || [], [currentConversation]);
@@ -37,6 +39,10 @@ function Home() {
   const messagesContainerRef = useRef<HTMLDivElement>(null)
   const [pendingMessage, setPendingMessage] = useState<Message | null>(null)
   const [error, setError] = useState<string | null>(null);
+  const [debugInfo, setDebugInfo] = useState<DebugInfo>({
+    systemMode: 'AI-Fi',
+    messageCount: 0
+  });
 
   const scrollToBottom = useCallback(() => {
     if (messagesContainerRef.current) {
@@ -49,6 +55,14 @@ function Home() {
   useEffect(() => {
     scrollToBottom()
   }, [messages, isLoading, scrollToBottom])
+  
+  // Update message count in debug info when messages change
+  useEffect(() => {
+    setDebugInfo(prev => ({
+      ...prev,
+      messageCount: messages.length,
+    }))
+  }, [messages])
 
   const createTitleFromInput = useCallback((text: string) => {
     const words = text.trim().split(/\s+/)
@@ -56,28 +70,70 @@ function Home() {
     return firstThreeWords + (words.length > 3 ? '...' : '')
   }, []);
 
-  // Helper function to process AI response
-  const processAIResponse = useCallback(async (conversationId: string, userMessage: Message) => {
-    try {
-      // Get active prompt
-      const activePrompt = getActivePrompt(store.state)
-      let systemPrompt
-      if (activePrompt) {
-        systemPrompt = {
-          value: activePrompt.content,
-          enabled: true,
+  // Helper functions to extract user information from conversation
+  const extractUserName = useCallback((messages: Message[]) => {
+    // Look for name patterns in user messages
+    for (const msg of messages) {
+      if (msg.role === 'user') {
+        const nameMatch = msg.content.match(/(?:my name is|i'm|i am)\s+([a-zA-Z\s]+)/i)
+        if (nameMatch) {
+          return nameMatch[1].trim()
         }
       }
+    }
+    return undefined
+  }, []);
 
-      // Get AI response with Venice settings
-      const response = await genAIResponse({
+  const extractUserPhone = useCallback((messages: Message[]) => {
+    // Look for phone patterns in user messages
+    for (const msg of messages) {
+      if (msg.role === 'user') {
+        const phoneMatch = msg.content.match(/(?:phone|number|call me at)\s*[:\-]?\s*(\d{3}[-.\s]?\d{3}[-.\s]?\d{4})/i)
+        if (phoneMatch) {
+          return phoneMatch[1].replace(/[-.\s]/g, '')
+        }
+      }
+    }
+    return undefined
+  }, []);
+
+  // Process AI response through AI-Fi agent system
+  const processAIResponse = useCallback(async (conversationId: string, userMessage: Message) => {
+    try {
+      // Update debug info
+      setDebugInfo(prev => ({
+        ...prev,
+        conversationId: conversationId,
+        messageCount: messages.length + 1,
+      }))
+
+      // Always route through AI-Fi agent system
+      const response = await genResponse({
         data: {
           messages: [...messages, userMessage],
-          systemPrompt,
-          model: settings.model,
-          webSearchEnabled: settings.webSearchEnabled,
+          conversationId: conversationId,
+          userName: extractUserName(messages),
+          userPhone: extractUserPhone(messages),
         },
       })
+      
+      // Extract debug headers from response
+      const agentName = response.headers.get('X-Agent-Name')
+      const agentAction = response.headers.get('X-Agent-Action')
+      const userType = response.headers.get('X-User-Type')
+      const userName = response.headers.get('X-User-Name')
+      const userStage = response.headers.get('X-User-Stage')
+      
+      setDebugInfo(prev => ({
+        ...prev,
+        lastAgent: agentName || undefined,
+        lastAction: agentAction || undefined,
+        currentUser: {
+          name: userName || undefined,
+          userType: userType || undefined,
+          stage: userStage || undefined,
+        },
+      }))
 
       const reader = response.body?.getReader()
       if (!reader) {
@@ -109,6 +165,7 @@ function Home() {
       }
 
       setPendingMessage(null)
+      setLoading(false) // Turn off loading when streaming is complete
       if (newMessage.content.trim()) {
         // Add AI message to Convex
         console.log('Adding AI response to conversation:', conversationId)
@@ -116,6 +173,14 @@ function Home() {
       }
     } catch (error) {
       console.error('Error in AI response:', error)
+      setLoading(false) // Turn off loading on error
+      
+      // Update debug info with error
+      setDebugInfo(prev => ({
+        ...prev,
+        lastError: error instanceof Error ? error.message : 'Unknown error',
+      }))
+      
       // Add an error message to the conversation
       const errorMessage: Message = {
         id: (Date.now() + 1).toString(),
@@ -124,7 +189,7 @@ function Home() {
       }
       await addMessage(conversationId, errorMessage)
     }
-  }, [messages, getActivePrompt, addMessage]);
+  }, [messages, addMessage, setLoading, setDebugInfo]);
 
   const handleSubmit = useCallback(async (e: React.FormEvent) => {
     e.preventDefault()
@@ -160,7 +225,7 @@ function Home() {
             
             // Add user message directly to Convex
             console.log('Adding user message to Convex conversation:', userMessage.content)
-            await addMessage(conversationId, userMessage)
+            await addMessage(conversationId!, userMessage)
           } else {
             console.warn('Failed to create Convex conversation, falling back to local')
             // Fallback to local storage if Convex creation failed
@@ -188,10 +253,11 @@ function Home() {
       }
       
       // Process with AI after message is stored
-      await processAIResponse(conversationId, userMessage)
+      await processAIResponse(conversationId!, userMessage)
       
     } catch (error) {
       console.error('Error:', error)
+      setLoading(false) // Ensure loading is turned off on error
       const errorMessage: Message = {
         id: (Date.now() + 1).toString(),
         role: 'assistant' as const,
@@ -207,14 +273,8 @@ function Home() {
           setError('An unknown error occurred.')
         }
       }
-    } finally {
-      setLoading(false)
     }
   }, [input, isLoading, createTitleFromInput, currentConversationId, createNewConversation, addMessage, processAIResponse, setLoading]);
-
-  const handleNewChat = useCallback(() => {
-    createNewConversation()
-  }, [createNewConversation]);
 
   const handleDeleteChat = useCallback(async (id: string) => {
     await deleteConversation(id)
@@ -242,7 +302,6 @@ function Home() {
       <Sidebar 
         conversations={conversations}
         currentConversationId={currentConversationId}
-        handleNewChat={handleNewChat}
         setCurrentConversationId={setCurrentConversationId}
         handleDeleteChat={handleDeleteChat}
         editingChatId={editingChatId}
@@ -250,6 +309,7 @@ function Home() {
         editingTitle={editingTitle}
         setEditingTitle={setEditingTitle}
         handleUpdateChatTitle={handleUpdateChatTitle}
+        debugInfo={debugInfo}
       />
 
       {/* Main Content */}

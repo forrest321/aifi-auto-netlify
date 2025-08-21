@@ -48,7 +48,6 @@ Powered by Vite, TanStack Start works with partners like:
 - Netlify (Hosting)
 - Neon (Database)
 - Convex (Serverless Database)
-- Sentry (Observability)
 
 ## Getting Started
 
