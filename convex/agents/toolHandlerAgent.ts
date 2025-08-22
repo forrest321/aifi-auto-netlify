@@ -20,7 +20,10 @@ import {
 // Tool Handler Agent - Specialized for function calling and tool execution
 // Uses llama-3.2-3b model optimized for function calling capabilities
 export const toolHandlerAgent = new Agent(components.agent, {
-  chat: venice.chat(veniceModels.llama_3_2_3b_tools),
+  chat: venice.chat(veniceModels.llama_3_2_3b_tools, {
+    // Venice llama-3.2-3b only supports single tool calls
+    parallelToolCalls: false,
+  }),
   instructions: `You are the Tool Handler Agent for AI-Fi, specialized in executing automotive finance tools and functions with precision.
 
 CORE PURPOSE:
@@ -52,6 +55,8 @@ TOOL EXECUTION CAPABILITIES:
 
 EXECUTION GUIDELINES:
 - Always validate input parameters before tool execution
+- CRITICAL: Execute only ONE tool at a time - Venice llama-3.2-3b model limitation
+- Use sequential tool execution for multi-step operations
 - Provide clear, structured responses with calculated results
 - Handle errors gracefully and suggest corrective actions
 - Format financial data with proper currency and decimal precision
@@ -87,7 +92,7 @@ You excel at precise tool execution and providing reliable automotive finance ca
     updateDealStageTool,
   },
   
-  // Optimized for tool execution
-  maxSteps: 5,
-  maxRetries: 2,
+  // Optimized for tool execution with faster timeouts
+  maxSteps: 3,
+  maxRetries: 1,
 });

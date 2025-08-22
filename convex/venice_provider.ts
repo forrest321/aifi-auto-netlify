@@ -11,6 +11,17 @@ export const venice = createOpenAI({
   apiKey: process.env.VENICE_API_KEY,
   baseURL: 'https://api.venice.ai/api/v1',
   compatibility: 'compatible', // Venice is OpenAI-compatible
+  // Venice llama-3.2-3b only supports single tool calls
+  fetch: async (input: RequestInfo | URL, init?: RequestInit) => {
+    if (init?.body && typeof init.body === 'string') {
+      const body = JSON.parse(init.body);
+      if (body.tools && body.parallel_tool_calls !== false) {
+        body.parallel_tool_calls = false; // Force single tool calls for Venice
+      }
+      init.body = JSON.stringify(body);
+    }
+    return fetch(input, init);
+  },
 });
 
 /**
